@@ -5,25 +5,7 @@ const UserController = require('./../controllers/user.controller');
 const router = express.Router()
 
 //Login route
-router.post('/api/login', async function(req,res, next){
-    const { email, password } = req.body;
-  if (email && password) {
-    
-    let user = await models.User.findOne({ where: {email: email} });
-    if (!user) {
-      res.status(401).json({ msg: 'No such user found', user });
-    }
-   if (user.password === password) {
-    
-      let payload = { id: user.id };
-      let token = jwt.sign(payload, jwtOptions.secretOrKey);
-      res.json({ msg: 'ok', token: token });
-    } else {
-      res.status(401).json({ msg: 'Password is incorrect' });
-    }
-  }
-
-})
+router.post('/login',UserController.login)
 
 
 router.post('/register', UserController.register)

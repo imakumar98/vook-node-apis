@@ -4,6 +4,8 @@ exports.getAllBooks = async function () {
 
     try {
         const books = await models.Book.findAll()
+        console.log("Below one are books")
+        console.log(books);
         return books;
     } catch (e) {
         //Log Errors

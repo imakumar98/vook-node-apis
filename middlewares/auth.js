@@ -1,7 +1,7 @@
 //Import Passport and passport jwt modules
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
-const jwt = require('jsonwebtoken');
+
 
 //ExtractJwt to help extract the token
 let ExtractJwt = passportJWT.ExtractJwt;

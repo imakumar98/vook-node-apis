@@ -1,4 +1,4 @@
-const BookService = require('./../services/book.service')
+const CategoryService = require('./../services/category.service')
 
 exports.getAllBooks = async function(req, res, next) {
     //Validate request parameters
