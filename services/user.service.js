@@ -11,9 +11,16 @@ exports.register = async function (newUser) {
     try {
         const hashedPassword = await hashPassword(newUser.password);
         const user = await models.User.create({name: newUser.name, email: newUser.email, password: hashedPassword})
-        return user;
+        const createdUser = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            updatedAt: user.updatedAt,
+            createdAt: user.createdAt
+        }
+        return createdUser;
     } catch (e) {
-        throw Error(e)
+        throw e
     }
 
 }
@@ -25,7 +32,6 @@ exports.login = async function (email, password) {
     
     if (!user) throw Error("User not found");
 
-    
     bcrypt.compare(password,user.password, async (err, result)=>{
         if(result==true) {
             let payload = { id: user.id };
@@ -40,6 +46,14 @@ exports.login = async function (email, password) {
        
         
     })
+}
+
+
+exports.isExists = async function(email) {
+
+    let user = await models.User.findOne({ where: {email: email} })
+
+    return user
 }
 
 
