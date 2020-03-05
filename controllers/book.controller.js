@@ -1,12 +1,9 @@
 const BookService = require('./../services/book.service')
+const validateBookInput = require('./../validations/book')
 
 exports.getAll = async function(req, res, next) {
-    //Validate request parameters
-
-    console.log("List of books");
-
     try {
-        const books = await BookService.getAllBooks()
+        const books = await BookService.getAll()
         console.log("Below one are books in controller");
         console.log(books)
         return res.status(200).json({ status: 200, data: books, message: 'Succesfully usets retrieved'})
@@ -20,8 +17,6 @@ exports.getAll = async function(req, res, next) {
 
 //Controller to create book
 exports.create = async function(req, res, next) {
-    
-    console.log(req.body)
 
     const { isValid, errors } = validateBookInput(req.body)
 
@@ -38,18 +33,23 @@ exports.create = async function(req, res, next) {
 
     try {
 
-        const slug = slugify(req.body.name)
+        console.log("I m creating new book");
+
+        const slug = slugify(req.body.title) + '-' +new Date().getTime();
 
         const newBook = {
-            name: req.body.name,
+            title: req.body.title,
+            author: req.body.author,
+            publisher: req.body.publisher,
+            price: req.body.price,
+            categoryId: req.body.categoryId,
             slug: slug,
-            parentId: req.body.parentId,
             image: req.body.image,
         }
 
-        const category = await CategoryService.create(newCategory)
+        const book = await BookService.create(newBook)
 
-        return res.status(201).json(category)
+        return res.status(201).json(book)
 
     } catch(e) {
 
