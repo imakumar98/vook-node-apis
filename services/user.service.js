@@ -28,24 +28,25 @@ exports.register = async function (newUser) {
 
 exports.login = async function (email, password) {
 
-    let user = await models.User.findOne({ where: {email: email} });
-    
-    if (!user) throw Error("User not found");
+    try {
 
-    bcrypt.compare(password,user.password, async (err, result)=>{
-        if(result==true) {
-            let payload = { id: user.id };
+        const user = await models.User.findOne({ where: {email: email} })
+
+        const isSame = await compare(password, user.password)
+
+        if(isSame==true) {
+            let payload = { id: user.id, name: user.name, email: user.email };
             let token = jwt.sign(payload, secret);
-            return {
-                message: 'Ok',
-                token: token
-            }
+            return token;
         }else {
-            throw Error("Incorrect Password!!")
+            throw Error("Incorrect password!!")
         }
-       
-        
-    })
+
+    } catch(e) {
+        throw e
+    }
+
+
 }
 
 
@@ -74,16 +75,17 @@ async function hashPassword (password) {
 }
 
 
-async function compare (password) {
+async function compare (password1, password2) {
 
-    const saltRounds = 12;
-  
-    const hashedPassword = await new Promise((resolve, reject) => {
-      bcrypt.hash(password, saltRounds, function(err, hash) {
-        if (err) reject(err)
-        resolve(hash)
-      });
+    const isSame = await new Promise((resolve, reject) => {
+        bcrypt.compare(password1, password2, function(err, result) {
+            if(err) reject(err)
+            resolve(result)
+        })
     })
-  
-    return hashedPassword
+
+    return isSame;
+
+
+
 }

@@ -1,5 +1,6 @@
 const UserService = require('./../services/user.service')
 const validateRegisterInput = require('./../validations/register')
+const validateLoginInput = require('./../validations/login')
 
 
 exports.register = async function(req, res, next) {
@@ -54,21 +55,53 @@ exports.register = async function(req, res, next) {
 
 exports.login = async function(req, res, next) {
 
-    //Validate request parameters
+    const { errors, isValid } = validateLoginInput(req.body)
+
+    if(!isValid) {
+        const errorResponse = {
+            name: "Bad Request",
+            message: "Login validation failed",
+            code: 400,
+            errors: errors
+        }
+        return res.status(400).json(errorResponse);
+        
+    }
 
     const { email, password } = req.body;
     try {
+
+        const user = await UserService.isExists(email)
+
+        if(!user) {
+
+            return res.status(401).json({
+                name: "Not Authenticated",
+                message: "Invalid Login",
+                code: 401,
+                errors: {}
+            })
+
+        }
+
         const token = await UserService.login(email, password);
-        console.log("Below one is token");
-        console.log(token);
-        return res.status(200).json({ status: 200, data: token, message: 'Login Successfull'})
+        
+        return res.status(200).json({
+            accessToken: token,
+            user: user
+        })
 
     } catch (e) {
-        return res.status(400).json({ status: 400, message: e.message});
+        res.status(401).json({
+            name: "Not Authenticated",
+            message: "Invalid Login",
+            code: 401,
+            errors: {}
+        });
 
     }
-        
-    
-
 }
+
+
+
 
