@@ -33,8 +33,6 @@ exports.create = async function(req, res, next) {
 
     try {
 
-        console.log("I m creating new book");
-
         const slug = slugify(req.body.title) + '-' +new Date().getTime();
 
         const newBook = {

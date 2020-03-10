@@ -11,14 +11,20 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      lineItemId: {
-        type: Sequelize.INTEGER
-      },
       remarks: {
         type: Sequelize.STRING
       },
-      status: {
-        type: Sequelize.STRING
+      deliveryDate: {
+        type: Sequelize.DATE
+      },
+      deliveryAddressId: {
+        type: Sequelize.INTEGER
+      },
+      billingAddressId: {
+        type: Sequelize.INTEGER
+      },
+      isBillingAddressSame: {
+        type: Sequelize.BOOLEAN
       },
       finalAmount: {
         type: Sequelize.INTEGER
