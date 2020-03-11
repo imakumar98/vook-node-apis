@@ -19,7 +19,7 @@ app.use(passport.initialize())
 
 
 //Use Routes
-app.use('/api',routes)
+app.use('/v1',routes)
 
 
 //Start Server
