@@ -58,6 +58,15 @@ exports.isExists = async function(email) {
 }
 
 
+//Function to find user by ID
+exports.getById = async function(pk) {
+
+    let user = await models.User.findByPk(pk)
+
+    return user
+}
+
+
 
 
 async function hashPassword (password) {
@@ -85,7 +94,4 @@ async function compare (password1, password2) {
     })
 
     return isSame;
-
-
-
 }

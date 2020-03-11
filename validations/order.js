@@ -5,16 +5,36 @@ const isEmpty = require('./../utils/isEmpty')
 module.exports = function validateOrderInput(data) {
     let errors = {}
 
-    data.name = !isEmpty(data.name) ? data.name : ''
-    data.parentId = !isEmpty(data.parentId) ? data.parentId : 0
-    data.image = !isEmpty(data.image) ? data.image : ''
+    data.userId = !isEmpty(data.userId) ? data.userId : '';
+    data.lineItems = !isEmpty(data.lineItems) ? data.lineItems : '';
+    data.deliveryAddressId = !isEmpty(data.deliveryAddressId) ? data.deliveryAddressId : '';
+    data.billingAddressId = !isEmpty(data.billingAddressId) ? data.billingAddressId : '';
+    data.paymentMode = !isEmpty(data.paymentMode) ? data.paymentMode : '';
+    data.finalAmount = !isEmpty(data.finalAmount) ? data.finalAmount : '';
 
-    if(!validator.isLength(data.name,{min : 2, max : 20})){
-        errors.name = 'Name characters length must be between 2 and 20'
+    if(validator.isEmpty(data.userId.toString())){
+        errors.userId = 'User ID is required';
     }
 
-    if(validator.isEmpty(data.name)){
-        errors.name = 'Category name field is required';
+    if(validator.isEmpty(data.deliveryAddressId.toString())){
+        errors.deliveryAddressId = 'Delivery adddress is required';
+    }
+
+
+   if(validator.isEmpty(data.paymentMode)){
+        errors.paymentMode = 'Payment mode is required';
+    }
+
+
+    if(validator.isEmpty(data.billingAddressId.toString())){
+        errors.billingAddressId = 'Billing adddress is required';
+    }
+    if(validator.isEmpty(data.finalAmount.toString())){
+        errors.finalAmount = 'Final amount is required';
+    }
+
+    if(isEmpty(data.lineItems) && data.lineItems.length==0) {
+        errors.lineItems = 'Please add atleast one book to line item';
     }
 
     return {

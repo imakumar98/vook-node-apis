@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const LineItem = sequelize.define('LineItem', {
+    orderId: DataTypes.INTEGER,
     bookId: DataTypes.INTEGER,
     quantity: DataTypes.INTEGER,
     amount: DataTypes.INTEGER

@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     deliveryDate: DataTypes.DATE,
     deliveryAddressId: DataTypes.INTEGER,
     billingAddressId: DataTypes.INTEGER,
-    isBillingAddressSame: DataTypes.BOOLEAN,
-    finalAmount: DataTypes.INTEGER
+    status: DataTypes.STRING,
+    paymentMode: DataTypes.STRING
   }, {});
   Order.associate = function(models) {
     // associations can be defined here

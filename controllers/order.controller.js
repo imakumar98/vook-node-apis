@@ -1,6 +1,10 @@
 const OrderService = require('./../services/order.service')
+const LineItemService = require('./../services/lineItem.service')
+const MailService = require('./../services/mail.service');
+const UserService = require('./../services/user.service');
+
+
 const validateOrderInput = require('./../validations/order');
-const slugify = require('./../utils/slugify')
 
 exports.getAll = async function(req, res, next) {
     //Validate request parameters
@@ -23,8 +27,6 @@ exports.getAll = async function(req, res, next) {
 //Create order controller
 exports.create = async function(req,res, next) {
 
-    console.log(req.body)
-
     const { isValid, errors } = validateOrderInput(req.body)
 
     if(!isValid) {
@@ -40,20 +42,51 @@ exports.create = async function(req,res, next) {
 
     try {
 
-        console.log("Create order");
+        const newOrder = {
+            userId: req.body.userId,
+            remarks: req.body.remarks,
+            deliveryDate: req.body.deliveryDate,
+            deliveryAddressId: req.body.deliveryAddressId,
+            billingAddressId: req.body.billingAddressId,
+            status: 'PENDING',
+            paymentMode: req.body.paymentMode,
+            finalAmount: req.body.finalAmount,
+        }
 
-        // const slug = slugify(req.body.name)
+        const order = await OrderService.create(newOrder)
 
-        // const newCategory = {
-        //     name: req.body.name,
-        //     slug: slug,
-        //     parentId: req.body.parentId,
-        //     image: req.body.image,
-        // }
+        const {id} = order;
 
-        // const category = await CategoryService.create(newCategory)
+        const lineItems = req.body.lineItems;
 
-        // return res.status(201).json(category)
+        lineItems.forEach(async (lineItem) => {
+            const newLineItem = {
+                orderId: id,
+                bookId: lineItem.bookId,
+                quantity: lineItem.quantity,
+                amount: lineItem.amount
+            }
+            await LineItemService.create(newLineItem)
+        });
+
+
+        //Send mail for order confirmation
+
+        const user = await UserService.getById(order.userId);
+
+        const status = await MailService.orderConfirmation(id, user.name, user.email);
+
+        if(status==202) return res.status(201).json(order)
+        
+
+
+
+
+
+
+        
+
+        
 
     } catch(e) {
 

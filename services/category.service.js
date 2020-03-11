@@ -7,7 +7,7 @@ exports.create = async function (newCategory) {
         
         return category;
     } catch (e) {
-        throw Error("Error while creating category", e)
+        throw Error(e)
     }
 }
 
