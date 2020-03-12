@@ -6,17 +6,18 @@ const UserService = require('./../services/user.service');
 
 const validateOrderInput = require('./../validations/order');
 
-exports.getAll = async function(req, res, next) {
-    //Validate request parameters
+
+//Get pending orders controllers
+exports.getPending = async function(req, res, next) {
 
     try {
-        const orders = await OrderService.getAll()
+        const orders = await OrderService.getPending()
         
         return res.status(200).json(orders)
 
     } catch (e) {
 
-        return res.status(400).json({ status: 400, message: e.message});
+        return res.status(400).json({ status: 400, message: e.message})
         
     }
 }

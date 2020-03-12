@@ -8,7 +8,7 @@ const OrderController = require('./../controllers/order.controller')
 router.post('/orders', OrderController.create)
 
 //Get Orders
-router.get('/orders', OrderController.getAll)
+router.get('/orders', OrderController.getPending)
 
 
 

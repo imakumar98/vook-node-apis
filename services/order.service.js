@@ -1,11 +1,13 @@
 const { Order } = require('./../database/models')
 
+
+//Function to create order
 exports.create = async function (newOrder) {
 
     try {
         const order = await Order.create(newOrder)
         
-        return order;
+        return order
 
     } catch (e) {
 
@@ -14,12 +16,16 @@ exports.create = async function (newOrder) {
 }
 
 
-exports.getAll = async function () {
+//Function to return all pending orders
+exports.getPending = async function () {
 
     try {
-        const categories = await Category.findAll()
-        return categories;
+        const pendingOrders = await Order.findAll({where: {status: 'PENDING'}})
+
+        return pendingOrders
+
     } catch (e) {
+
         throw Error(e)
     }
 }
