@@ -1,6 +1,7 @@
 //Import Modules
 require('dotenv')
 const app = require('express')()
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 
@@ -16,6 +17,9 @@ const PORT = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(passport.initialize())
 
+
+//Enable cors
+app.use(cors())
 
 
 //Use Routes
