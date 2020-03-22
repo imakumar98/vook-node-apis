@@ -10,7 +10,7 @@ const passport = require('passport')
 const routes = require('./routes')
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 
 //Middlewares
@@ -23,6 +23,9 @@ app.use(cors())
 
 
 //Use Routes
+app.get('/', (req,res)=>{
+    res.send("Welcome to Vook API docs");
+})
 app.use('/v1',routes)
 
 

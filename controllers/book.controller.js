@@ -4,9 +4,7 @@ const validateBookInput = require('./../validations/book')
 exports.getAll = async function(req, res, next) {
     try {
         const books = await BookService.getAll()
-        console.log("Below one are books in controller");
-        console.log(books)
-        return res.status(200).json({ status: 200, data: books, message: 'Succesfully usets retrieved'})
+        return res.status(200).json({ total: books.length, data: books})
     } catch (e) {
 
         return res.status(400).json({ status: 400, message: e.message});
